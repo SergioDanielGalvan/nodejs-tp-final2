@@ -27,6 +27,7 @@ export const getAllProductosByCategoria = async ( req, res ) => {
   }
   finally {
   }
+}
 ;
 
 export const getProductoById = async ( req, res ) => {
@@ -50,19 +51,20 @@ export const createProducto = async ( req, res ) => {
     return res.status(422).json({ error: "El nombre es obligatorio" });
   }
 
-  const { nombre, precio, categorias } = req.body;
+  const { nombre, precio, categorias, stock } = req.body;
 
-  const producto = await model.createProducto( nombre, precio, categorias );
+  const producto = await model.createProducto( nombre, precio, categorias, stock );
 
   res.status(201).json( producto );
 };
 
 class Producto  {
-  constructor( id, nombre, precio, categorias ) {
+  constructor( id, nombre, precio, categorias, stock ) {
     this.id = id;
     this.nombre = nombre;
     this.precio = precio;
     this.categorias = categorias;
+    this.stock = stock;
   }
 }
 

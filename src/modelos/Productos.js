@@ -16,13 +16,21 @@ const __dirname = import.meta.dirname;
 //   console.log(products);
 // });
 
-export const getAllProductos = async () => {
+export const getAllProductos = async ( categoria, stock ) => {
   try {
     const data = await fs.readFile(
       path.join( __dirname, "Productos.json"), "utf-8"  );
 
-    const productos = JSON.parse(data);
+    var productos = JSON.parse(data);
+    if ( stock ) {
+      productos = productos.filter( ( producto ) => producto.stock > 0 );
+    }  
 
+    if ( categoria ) {
+      return productos.filter( ( producto ) =>
+        producto.categorias.includes( categoria )
+      );
+    }  
     return productos;
 
   } catch (error) {
@@ -36,7 +44,7 @@ export const getAllProductos = async () => {
 export const getProductoById = async (id) => {
   try {
     const data = await fs.readFile(
-      path.join(__dirname, "Productoss.json"),
+      path.join(__dirname, "Productos.json"),
       "utf-8"
     );
 
@@ -52,12 +60,34 @@ export const getProductoById = async (id) => {
   }
 };
 
-export const createProducto = async ( nombre, precio, categorias ) => {
+
+
+export const getProductoByNombre = async ( nombre ) => {
+  try {
+    const data = await fs.readFile(
+      path.join(__dirname, "Productos.json"),
+      "utf-8"
+    );
+
+    const productos = JSON.parse(data);
+
+    const producto = products.find((item) => item.nombre == nombre );
+
+    return producto;
+  } catch ( error ) {
+    console.error(error);
+  }
+    finally {
+  }
+};
+
+export const createProducto = async ( nombre, precio, categorias, stock ) => {
   const product = {
     id: Date.now(),
     nombre,
     precio,
     categorias,
+    stock,
   };
 
   try {

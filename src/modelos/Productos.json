@@ -36,14 +36,14 @@
   },
   {
     "id": 1763685987620,
-    "nombre": "Product 1",
+    "nombre": "Mouse Pad Gamer XL",
     "precio": 1000,
-    "categorias": ["Tecnología", "Accesorios"],
+    "categorias": ["Tecnología", "Gaming", "Accesorios"],
     "stock": 50
   },
   {
     "id": 1763686078888,
-    "nombre": "Product 1b",
+    "nombre": "Cable USB - Type C 1 metro",
     "precio": 1000,
     "categorias": ["Tecnología", "Accesorios"],
     "stock": 230
