@@ -1,11 +1,11 @@
-import * as model from "../modelos/Productos.js";
+import * as modelo from "../modelos/Productos.js";
 
 const cLargoMinimoNombre = 10;
 const cLargoMaxinoNombre = 40;
 
 export const getAllProductos = async ( req, res ) => {
   try {
-    const productos = await model.getAllProductos( '', false );
+    const productos = await modelo.getAllProductos( '', false );
     if ( !productos ) {
       return res.status(404).json({ error: "Productos no encontrados" });
     }
@@ -19,7 +19,7 @@ export const getAllProductos = async ( req, res ) => {
 export const getAllProductosByCategoria = async ( req, res ) => {
   try {
     const { categoria } = req.params;
-    const productos = await model.getAllProducts( categoria, false );
+    const productos = await modelo.getAllProducts( categoria, false );
     if ( !productos ) {
       return res.status(404).json({ error: "Productos no encontrados" });
     }
@@ -29,13 +29,31 @@ export const getAllProductosByCategoria = async ( req, res ) => {
   }
   finally {
   }
-}
-;
+};
+
+export const getProductoByNombre = async ( req, res ) => {
+  try {
+    const { nombre } = req.params;
+    // Checks
+    if ( !nombre ) {
+      return res.status(422).json({ error: "El nombre es obligatorio" });
+    }
+    const producto = await modelo.getProductoByNombre( nombre );
+    if ( !producto ) {
+      return res.status(404).json({ error: "Producto no encontrado" });
+    } 
+    res.status(200).json( producto );
+  } catch ( error ) {
+    res.status(500).json({ error: "Error del servidor" });
+  }
+  finally {
+  }
+};
 
 export const getProductoById = async ( req, res ) => {
   try { 
     const { id } = req.params;
-    const product0 = await model.getProductoById( id );
+    const producto = await modelo.getProductoById( id );
     if ( !producto ) {
       return res.status(404).json({ error: "Producto no encontrado" });
     }
@@ -60,10 +78,9 @@ export const createProducto = async ( req, res ) => {
     return res.status(422).json({ error: `El nombre no debe exceder los ${cLargoMaxinoNombre} caracteres` });
   }
 
-
   const { nombre, precio, categorias, stock } = req.body;
 
-  const producto = await model.createProducto( nombre, precio, categorias, stock );
+  const producto = await modelo.createProducto( nombre, precio, categorias, stock );
 
   res.status(201).json( producto );
 };

@@ -9,15 +9,15 @@ import {
   getProductoByNombre,
   getAllProductosByCategoria,
   createProducto,
-} from "../controladores/ProductosController.js";
+} from "../controladores/ProductosControlador.js";
 
 router.get("/productos", getAllProductos);
 router.get("/productos/:id", getProductoById);
-router.get("/productos/:nombre", getProductoByNombre);
-router.post("/productos", createProducto);
+router.get("/productos/nombre/:nombre", getProductoByNombre);
 router.get("/productos/categoria", getAllProductosByCategoria);
+router.post("/productos", createProducto);
 router.delete("/productos/:id", createProducto);
 
-router.post("/auth/login", loginusuariocreateProducto);
+//router.post("/auth/login", loginusuario);
 
 export default router;

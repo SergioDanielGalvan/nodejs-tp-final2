@@ -18,10 +18,9 @@ const __dirname = import.meta.dirname;
 
 export const getAllProductos = async ( categoria, stock ) => {
   try {
-    const data = await fs.readFile(
-      path.join( __dirname, "Productos.json"), "utf-8"  );
-
+    const data = await fs.readFile( path.join( __dirname, "Productos.json"), "utf-8"  );
     var productos = JSON.parse(data);
+
     if ( stock ) {
       productos = productos.filter( ( producto ) => producto.stock > 0 );
     }  
@@ -38,29 +37,24 @@ export const getAllProductos = async ( categoria, stock ) => {
   }
   finally {
   }
-
 };
 
 export const getProductoById = async (id) => {
   try {
-    const data = await fs.readFile(
-      path.join(__dirname, "Productos.json"),
-      "utf-8"
-    );
+    const data = await fs.readFile( path.join(__dirname, "Productos.json"), "utf-8" );
+    var productos = JSON.parse(data);
 
-    const productos = JSON.parse(data);
-
-    const producto = products.find((item) => item.id == id);
-
+    var producto = productos.find((item) => item.id == id);
+    if ( !producto ) {  
+      return {"error": "Producto no encontrado"};
+    }
     return producto;
   } catch ( error ) {
     console.error(error);
   }
-    finally {
+  finally {
   }
 };
-
-
 
 export const getProductoByNombre = async ( nombre ) => {
   try {
@@ -71,19 +65,20 @@ export const getProductoByNombre = async ( nombre ) => {
 
     const productos = JSON.parse(data);
 
-    const producto = products.find((item) => item.nombre == nombre );
+    // const listaproductos = await Producto.find({ nombre: { $regex: nombre, $options: 'i' }    });
+    const producto = productos.find((item) => item.nombre == nombre );
 
     return producto;
   } catch ( error ) {
     console.error(error);
   }
-    finally {
+  finally {
   }
 };
 
 export const createProducto = async ( nombre, precio, categorias, stock ) => {
   const product = {
-    id: Date.now(),
+    id: Math.max( ...productos.map( p => p.id ) ) + 1,//Date.now(),
     nombre,
     precio,
     categorias,
@@ -91,10 +86,7 @@ export const createProducto = async ( nombre, precio, categorias, stock ) => {
   };
 
   try {
-    const data = await fs.readFile(
-      path.join(__dirname, "Productos.json"),
-      "utf-8"
-    );
+    const data = await fs.readFile( path.join(__dirname, "Productos.json"), "utf-8" );
 
     const productos = JSON.parse(data);
 
@@ -102,14 +94,14 @@ export const createProducto = async ( nombre, precio, categorias, stock ) => {
 
     await fs.writeFile(
       path.join(__dirname, "products.json"),
-      JSON.stringify(products)
+      JSON.stringify(productos)
     );
 
-    return product;
+    return producto;
   } catch (error) {
     console.error(error);
   }
-      finally {
+  finally {
   }
 
 };
