@@ -66,6 +66,31 @@ export const getProductoById = async ( req, res ) => {
 
 };
 
+export const updateStockById = async ( req, res ) => {
+  try {
+    const { id } = req.params;
+    const { stock } = req.body;
+    if ( typeof stock === 'undefined' ) {
+      return res.status(422).json({ error: "El stock es obligatorio" });
+    }
+    else if ( isNaN( stock ) || stock < 0 ) {
+      return res.status(422).json({ error: "El stock debe ser un número válido mayor o igual a 0" });
+    }
+    else if ( !Number.isInteger( stock ) ) {
+      return res.status(422).json({ error: "El stock debe ser un número entero" });
+    }
+    else if ( stock < 0 ) {
+      return res.status(422).json({ error: "El stock no puede ser negativo" });
+    } 
+    const result = await modelo.updateStockById( id, stock );
+    res.status(200).json( result );
+  } catch ( error ) {
+    res.status(500).json({ error: "Error del servidor" });
+  }
+  finally {
+  }
+};
+
 export const createProducto = async ( req, res ) => {
   // Checks
   if ( typeof req.body.nombre == undefined ) {

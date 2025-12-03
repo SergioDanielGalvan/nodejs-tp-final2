@@ -29,7 +29,10 @@ async function query(sql, params) {
     console.error('Error executing query:', error);
     throw error;
   }
+  finally {
+    if (connection) connection.release(); // Liberar la conexión de vuelta al pool
+  }
 }
 
-export { getConnection, query };
+export { pool, getConnection, query };
 export default pool; // Exportar el pool por defecto
