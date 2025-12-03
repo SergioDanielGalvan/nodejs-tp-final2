@@ -1,4 +1,5 @@
 import connection from "./src/controladores/conexion_db.js";
+import connection from "./src/controladores/pool_mySQL.js";
 
     async function fetchData() {
       const dbconnection = await connection();
@@ -8,3 +9,5 @@ import connection from "./src/controladores/conexion_db.js";
     }
 
     fetchData();
+
+    

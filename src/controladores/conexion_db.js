@@ -1,5 +1,5 @@
-    // Using 'mysql2' package
-    import mysql from 'mysql2/promise';
+   // Using 'mysql2' package
+   import mysql from 'mysql2/promise';
 
    async function connection () {
     try { 
@@ -17,5 +17,5 @@
         throw error;
       } 
     }
-    
+
     export default connection;
