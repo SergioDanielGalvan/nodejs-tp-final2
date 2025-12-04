@@ -31,6 +31,20 @@ export const getAllProductosByCategoria = async ( req, res ) => {
   }
 };
 
+export const getAllProductosWithStock = async ( req, res ) => {
+  try {
+    const productos = await modelo.getAllProductosWithStock();
+    if ( !productos ) {
+      return res.status(404).json({ error: "Productos no encontrados" });
+    } 
+    res.status(200).json( productos );
+  } catch ( error ) {
+    res.status(500).json({ error: "Error del servidor" });
+  }
+  finally {
+  } 
+}; 
+
 export const getProductoByNombre = async ( req, res ) => {
   try {
     const { nombre } = req.params;

@@ -19,6 +19,24 @@ export const getAllProductos = async (categoria, stock) => {
   }
 }
 
+export const getAllProductosWithStock = async () => { 
+  try {
+    let sql = 'SELECT id, nombre, precio, stock, categorias FROM productos WHERE stock > 0';
+    const db = await connection();
+    const [productos] = await db.execute(sql);
+    if ( !productos ) {
+      return { "error": "No se encontraron productos"};
+    }
+    return productos;
+  }
+  catch ( error ) {
+    console.error('Error al obtener productos con stock:', error);  
+    throw error;
+  }
+  finally {
+  } 
+}
+
 /*
 export const getAllProductos = async (categoria, stock) => {
   try {
