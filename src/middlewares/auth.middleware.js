@@ -5,7 +5,7 @@ export const auth = (req, res, next) => {
 
   if (!token) return res.sendStatus(401);
 
-  jwt.verify( token, 'U1trS3cr3t!', (error) => {
+  jwt.verify( token,  process.env.JWT_SECRET || 'V1trS3cr3t!', (error) => {
     if (error) return res.sendStatus(403);
     next();
   })
