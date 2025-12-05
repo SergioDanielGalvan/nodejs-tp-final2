@@ -1,0 +1,8 @@
+Instalando Dependencias
+
+npm install express
+npm install express cors
+npm install mysql2
+npm install jsonwebtoken
+npm install dotenv
+npm install body-parser

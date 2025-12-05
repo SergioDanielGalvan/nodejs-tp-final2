@@ -8,16 +8,25 @@ import { auth } from "./src/middlewares/auth.middleware.js";
 
 const app = express();
 
+/*
+const corsOptions = {
+  origin: 'http://localhost:3001', // Permite solo peticiones desde este origen
+  optionsSuccessStatus: 200
+};
+
+app.get('/datos', cors(corsOptions), (req, res) => {
+  res.json({ message: 'Datos con CORS restringido' });
+});
+*/
 app.use(cors()); // Configuración CORS genérica
+
 app.use(express.json());
 //app.use(bodyParser.json());
 
-app.get("/", auth, (req, res) => {
-  res.send("API ...");
-});
-
+// Ruta pública para login
 app.use("/auth", authRouter);
-//app.use( "/api", authRouter);
+
+// Rutas de productos (algunas públicas, otras protegidas)
 app.use( "/api", productosRouter);
 
 app.use((req, res, next) => {

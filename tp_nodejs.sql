@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-12-2025 a las 01:31:22
+-- Tiempo de generación: 05-12-2025 a las 16:05:45
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -73,8 +73,8 @@ CREATE TABLE `operadores` (
 --
 
 INSERT INTO `operadores` (`id`, `nombre`, `password`, `intentos`, `tipooperador`, `FechaUtimoLogin`) VALUES
-(1, 'Admin', '', 0, 1, '2025-12-03 01:09:36'),
-(2, 'Usuario', '', 0, 2, '2025-12-03 01:09:36');
+(1, 'Admin', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', 0, 1, '2025-12-03 01:09:36'),
+(2, 'Usuario', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', 0, 2, '2025-12-03 01:09:36');
 
 -- --------------------------------------------------------
 
@@ -112,7 +112,8 @@ INSERT INTO `productos` (`id`, `nombre`, `precio`, `categorias`, `stock`, `Fecha
 (11, 'Cable USB - Type C 1 metro', 1000, '[\"Tecnología\", \"Accesorios\"]', 230, '2025-12-02 21:28:03', 1, NULL, NULL),
 (12, 'Microfono Hyperx Quadcast 2 S USB Black ', 195000, '[\"Tecnología\", \"Audio\", \"Accesorios\"]', 4, '2025-12-02 21:28:03', 1, NULL, NULL),
 (13, 'Cable USB - Type C 1 metro', 1000, '[\"Tecnología\", \"Accesorios\"]', 230, '2025-12-02 21:28:11', 1, NULL, NULL),
-(14, 'Microfono Hyperx Quadcast 2 S USB Black ', 195000, '[\"Tecnología\", \"Audio\", \"Accesorios\"]', 4, '2025-12-02 21:28:11', 1, NULL, NULL);
+(14, 'Microfono Hyperx Quadcast 2 S USB Black ', 195000, '[\"Tecnología\", \"Audio\", \"Accesorios\"]', 4, '2025-12-02 21:28:11', 1, NULL, NULL),
+(15, 'Pantuflas Addidas', 82000, '\"[\\\"Hogar\\\"]\"', 30, '2025-12-04 10:58:02', 0, NULL, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -156,7 +157,7 @@ ALTER TABLE `operadores`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id Autoincremental', AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id Autoincremental', AUTO_INCREMENT=16;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

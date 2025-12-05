@@ -1,5 +1,6 @@
 // src/rutas/ProductosRouter.js
 import { Router } from "express";
+import { auth } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -13,13 +14,16 @@ import {
   deleteProductoById,
 } from "../controladores/ProductosControlador.js";
 
+// Rutas de productos Publicas
 router.get("/productos", getAllProductos);
 router.get("/productos/:id", getProductoById);
 router.get("/productos/nombre/:nombre", getProductoByNombre);
 router.get("/productos/categoria", getAllProductosByCategoria);
-router.get("/productos/stock", getAllProductosWithStock);
-router.post("/productos", createProducto);
-router.delete("/productos/:id", deleteProductoById);
+
+// Rutas de productos Privadas
+router.get("/productos/stock", auth, getAllProductosWithStock);
+router.post("/productos", auth, createProducto);
+router.delete("/productos/:id", auth, deleteProductoById);
 
 //router.post("/auth/login", loginusuario);
 
