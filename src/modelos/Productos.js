@@ -1,7 +1,41 @@
-import connection from "../controladores/conexion_db.js";
-import { query } from "../controladores/pool_mySQL.js/";
+//import connection from "../controladores/conexion_db.js";
+//import { query } from "../controladores/pool_mySQL.js/";
 
-export const getAllProductos = async (categoria, stock) => {
+import { db } from "./firebase.js";
+import { collection, getDocs } from "firebase/firestore";
+
+const productosCollection = collection(db, "productos");
+
+export const getAllProducto = async (categoria, stock) => {
+  try {
+    const snapshot = await getDocs(productosCollection);
+    const productos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));  
+    return productos;
+  } catch (error) {
+    console.error('Error al obtener productos desde Firestore:', error);
+    throw error;
+  }
+  finally {
+  }
+}
+
+export const getAllProductosWithStock = async () => { 
+  try {
+    const snapshot = await getDocs(productosCollection);
+    const productos = snapshot.docs
+      .map(doc => ({ id: doc.id, ...doc.data() }))
+      .filter(producto => producto.stock > 0);  
+    return productos;
+  } catch ( error ) {
+    console.error('Error al obtener productos con stock desde Firestore:', error);  
+    throw error;
+  } 
+  finally {
+  }
+}
+
+/*
+export const getAllProductosOld = async (categoria, stock) => {
   try {
     let sql = 'SELECT id, nombre, precio, stock, categorias FROM productos';
     const db = await connection();
@@ -18,8 +52,10 @@ export const getAllProductos = async (categoria, stock) => {
   finally { 
   }
 }
+*/
 
-export const getAllProductosWithStock = async () => { 
+/*
+export const getAllProductosWithStockOld = async () => { 
   try {
     let sql = 'SELECT id, nombre, precio, stock, categorias FROM productos WHERE stock > 0';
     const db = await connection();
@@ -36,6 +72,7 @@ export const getAllProductosWithStock = async () => {
   finally {
   } 
 }
+*/
 
 /*
 export const getAllProductos = async (categoria, stock) => {
