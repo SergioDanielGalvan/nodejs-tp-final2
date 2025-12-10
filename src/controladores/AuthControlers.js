@@ -5,7 +5,7 @@ import crypto from "crypto";
 import { db } from "../modelos/firebase.js";
 import { collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc } from "firebase/firestore";
   
-const operadoresCollection = collection(db, "productos");
+const operadoresCollection = collection(db, "operadores");
 
 /*
 {
@@ -20,6 +20,7 @@ export const login = async (req, res) => {
     return res.status(400).json({ error: "Faltan credenciales" });
   }
   try {
+
     const snapshot = await getDocs(operadoresCollection);
     let usuario = null;
     snapshot.forEach((doc) => {
