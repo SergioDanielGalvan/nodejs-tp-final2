@@ -1,5 +1,4 @@
 // src/rutas/OperadoresRouter.js
-// src/rutas/OperadoresRouter.js
 import { Router } from "express";
 import { auth } from "../middlewares/auth.middleware.js";
 

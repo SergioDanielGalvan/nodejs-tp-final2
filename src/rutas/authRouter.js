@@ -4,7 +4,6 @@ import { login } from '../controladores/AuthControlers.js';
 
 const router = Router();
 
-console.log("Definiendo ruta /auth/login");
 router.post( '/login', login );   
 
 export default router;

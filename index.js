@@ -24,8 +24,6 @@ app.use(express.json());
 //app.use(bodyParser.json());
 
 // Ruta pública para login
-console.log("Configurando ruta de autenticación");
-
 app.use("/auth", authRouter);
 
 // Rutas de productos (algunas públicas, otras protegidas)
