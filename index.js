@@ -5,7 +5,7 @@ import productosRouter from "./src/rutas/ProductosRouter.js";
 import authRouter from "./src/rutas/authRouter.js";
 // import { auth } from "./src/middlewares/auth.middleware.js";
 // import bodyParser from 'body-parser';
-
+import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
@@ -35,9 +35,12 @@ app.use("/auth", authRouter);
 // Rutas de productos (algunas públicas, otras protegidas)
 app.use( "/api", productosRouter);
 
-app.get('/help', (req, res) => {
-    res.sendFile ( path.join(__dirname, '../vistas', 'help.html'));
-});
+app.get( '/help', (req, res) => {
+  
+  const helpPath = path.join(__dirname, "/src/vistas/", 'help.html');
+  console.log( helpPath );
+  res.sendFile(helpPath);
+} );
 
 app.use((req, res, next) => {
   res.status(404).json({ error: "Not Found" });
