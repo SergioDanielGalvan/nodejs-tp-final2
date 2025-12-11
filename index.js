@@ -6,7 +6,12 @@ import authRouter from "./src/rutas/authRouter.js";
 // import { auth } from "./src/middlewares/auth.middleware.js";
 // import bodyParser from 'body-parser';
 
-const path = require('path'); // Para manejar rutas de archivos
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const app = express();
 
 /*
@@ -30,11 +35,8 @@ app.use("/auth", authRouter);
 // Rutas de productos (algunas públicas, otras protegidas)
 app.use( "/api", productosRouter);
 
-app.get('/?', (req, res) => {
-    res.sendFile( path.join(__dirname, '../vistas', 'help.html'));
-});
 app.get('/help', (req, res) => {
-    res.sendFile( path.join(__dirname, '../vistas', 'help.html'));
+    res.sendFile ( path.join(__dirname, '../vistas', 'help.html'));
 });
 
 app.use((req, res, next) => {
