@@ -1,0 +1,10 @@
+* {
+    margin: 0px 0px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --inputbackground: yellow;
+    --botonbackcolor: black;
+    --botonbackgroundcolor: white;
+ }
