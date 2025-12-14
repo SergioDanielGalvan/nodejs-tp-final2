@@ -8,3 +8,41 @@
     --botonbackcolor: black;
     --botonbackgroundcolor: white;
  }
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    line-height: 1.6;
+}
+h1, h2 {
+    color: #333;
+}
+.endpoint {
+    background-color: #f4f4f4;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-left: 5px solid #007bff;
+}
+.method {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 3px;
+    color: white;
+    font-weight: bold;
+}
+.get { background-color: #28a745; }
+.post { background-color: #007bff; }
+.put { background-color: #ffc107; color: black; }
+.delete { background-color: #dc3545; }
+.auth { background-color: #6c757d; }
+code {
+    background-color: #eee;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+pre {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+}

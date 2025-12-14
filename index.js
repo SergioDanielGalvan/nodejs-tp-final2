@@ -37,7 +37,7 @@ app.use( "/api", productosRouter);
 
 app.get( '/help', (req, res) => {
   
-  const helpPath = path.join(__dirname, "/src/vistas/", 'help.html');
+  const helpPath = path.join(__dirname, "/src/vistas/", 'ayuda.html');
   console.log( helpPath );
   res.sendFile(helpPath);
 } );

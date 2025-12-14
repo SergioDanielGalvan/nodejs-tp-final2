@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href = "../css/estilos.css" >
+    <title>Documentación de la API</title>
+</head>
+<body>
+    <h1>Documentación de la API</h1>
+    <p>Esta API permite gestionar productos y requiere autenticación mediante JWT para algunas operaciones.</p>
+
+    <h2>Autenticación</h2>
+    <p>Para autenticarse, debe obtener un token JWT mediante el endpoint de login. Luego, incluya el token en las solicitudes protegidas en el encabezado <code>Authorization</code> con el formato <code>Bearer &lt;token&gt;</code>.</p>
+
+    <h2>Endpoints</h2>
+
+    <div class="endpoint">
+        <h3>Login</h3>
+        <p><span class="method post">POST</span> <code>/auth/login</code> (Público)</p>
+        <p>Obtiene un token de autenticación.</p>
+        <p><strong>Parámetros (body JSON):</strong></p>
+        <ul>
+            <li><code>email</code> (string): Correo electrónico del usuario. Ejemplo: "x@x.com"</li>
+            <li><code>password</code> (string): Contraseña del usuario. Ejemplo: "1234!"</li>
+        </ul>
+        <p><strong>Respuesta exitosa (200):</strong></p>
+        <pre><code>{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}</code></pre>
+        <p><strong>Respuesta de error (401):</strong></p>
+        <pre><code>{
+    "error": "Credenciales inválidas"
+}</code></pre>
+    </div>
+
+    <div class="endpoint">
+        <h3>Obtener todos los productos</h3>
+        <p><span class="method get">GET</span> <code>/api/productos</code> (Público)</p>
+        <p>Retorna una lista de productos.</p>
+        <p><strong>Respuesta exitosa (200):</strong></p>
+        <pre><code>[
+    {
+        "id": 1,
+        "nombre": "Producto 1"
+    },
+    {
+        "id": 2,
+        "nombre": "Producto 2"
+    }
+]</code></pre>
+    </div>
+
+    <div class="endpoint">
+        <h3>Crear un producto (Protegido)</h3>
+        <p><span class="method post">POST</span> <code>/api/productos</code> <span class="auth">Requiere autenticación</span></p>
+        <p>Crea un nuevo producto.</p>
+        <p><strong>Parámetros (body JSON):</strong></p>
+        <ul>
+            <li><code>nombre</code> (string): Nombre del producto.</li>
+            <li><code>precio</code> (number): Precio del producto.</li>
+            <!-- Agrega más campos según tu modelo de producto -->
+        </ul>
+        <p><strong>Respuesta exitosa (201):</strong></p>
+        <pre><code>{
+    "message": "Producto creado",
+    "producto": {
+        "id": 3,
+        "nombre": "Nuevo producto",
+        "precio": 100
+    }
+}</code></pre>
+        <p><strong>Respuesta de error (401):</strong></p>
+        <pre><code>{
+    "error": "Acceso no autorizado"
+}</code></pre>
+    </div>
+
+    <div class="endpoint">
+        <h3>Actualizar un producto (Protegido)</h3>
+        <p><span class="method put">PUT</span> <code>/api/productos/:id</code> <span class="auth">Requiere autenticación</span></p>
+        <p>Actualiza un producto existente.</p>
+        <p><strong>Parámetros (ruta):</strong></p>
+        <ul>
+            <li><code>id</code> (number): ID del producto a actualizar.</li>
+        </ul>
+        <p><strong>Parámetros (body JSON):</strong></p>
+        <ul>
+            <li><code>nombre</code> (string): Nuevo nombre del producto.</li>
+            <li><code>precio</code> (number): Nuevo precio del producto.</li>
+        </ul>
+        <p><strong>Respuesta exitosa (200):</strong></p>
+        <pre><code>{
+    "message": "Producto actualizado",
+    "producto": {
+        "id": 1,
+        "nombre": "Producto actualizado",
+        "precio": 150
+    }
+}</code></pre>
+        <p><strong>Respuesta de error (404):</strong></p>
+        <pre><code>{
+    "error": "Producto no encontrado"
+}</code></pre>
+    </div>
+
+    <div class="endpoint">
+        <h3>Eliminar un producto (Protegido)</h3>
+        <p><span class="method delete">DELETE</span> <code>/api/productos/:id</code> <span class="auth">Requiere autenticación</span></p>
+        <p>Elimina un producto existente.</p>
+        <p><strong>Parámetros (ruta):</strong></p>
+        <ul>
+            <li><code>id</code> (number): ID del producto a eliminar.</li>
+        </ul>
+        <p><strong>Respuesta exitosa (200):</strong></p>
+        <pre><code>{
+    "message": "Producto eliminado"
+}</code></pre>
+        <p><strong>Respuesta de error (404):</strong></p>
+        <pre><code>{
+    "error": "Producto no encontrado"
+}</code></pre>
+    </div>
+
+    <h2>Ejemplo de uso con cURL</h2>
+    <p>1. Obtener token:</p>
+    <pre><code>curl -X POST http://localhost:3000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"x@x.com","password":"1234!"}'</code></pre>
+    <p>2. Acceder a ruta protegida (crear producto):</p>
+    <pre><code>curl -X POST http://localhost:3000/api/productos \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer &lt;token&gt;" \
+  -d '{"nombre":"Nuevo producto","precio":100}'</code></pre>
+
+    <p><strong>Nota:</strong> Reemplace <code>&lt;token&gt;</code> con el token recibido en el login.</p>
+
+    <footer>
+        <p>API desarrollada con Node.js y Express. Para más información, consulte el repositorio del proyecto.</p>
+    </footer>
+</body>
+</html>
