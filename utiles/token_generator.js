@@ -19,3 +19,14 @@ export const verifyToken = ( token ) => {
     }
     return null;
 }
+
+export const extraerPayload = ( token ) => {
+  try {
+    const decoded = jwt.decode( token, { complete: true } );
+    return decoded.payload; 
+    } catch ( error ) {
+    }
+    finally {
+    }
+    return null;
+}

@@ -1,6 +1,7 @@
 // src/controladores/OperadoresControlador.js
 import e from "express";
 import * as modelo from "../modelos/Operadores.js";
+import { verifyToken, extraerPayload } from "../utiles/token_generator.js";
 
 export const getAllOperadores = async ( req, res ) => {
     try {
@@ -50,8 +51,13 @@ export const getOperadorByEmail = async ( req, res ) => {
 };
 export const createOperador = async ( req, res ) => {
     try {
+        if ( !req.body || Object.keys(req.body).length === 0 ) {
+            return res.status(400).json({ error: "Datos del operador son obligatorios" });
+        }
+        // Checks de Auth del operador a crear pueden ir aquí
+        const token = req.headers.authorization;
         const operadorData = req.body;
-        const newOperador = await modelo.createOperador( operadorData );
+        const newOperador = await modelo.createOperador( operadorData, token );
         res.status(201).json( newOperador );
     } 
     catch ( error ) {
@@ -64,7 +70,8 @@ export const createOperador = async ( req, res ) => {
 export const deleteOperadorByEmail = async ( req, res ) => {
     try {
         const { email } = req.params;
-        const result = await modelo.deleteOperadorByEmail( email ); 
+        const token = req.headers.authorization;
+        const result = await modelo.deleteOperadorByEmail( email, token ); 
         if ( result.affectedRows === 0 ) {
             return res.status(404).json({ error: "Operador no encontrado" });
         }
@@ -81,7 +88,8 @@ export const updateOperadorByEmail = async ( req, res ) => {
     try {
         const { email } = req.params;
         const operadorData = req.body;
-        const result = await modelo.updateOperadorByEmail( email, operadorData );
+        const token = req.headers.authorization;
+        const result = await modelo.updateOperadorByEmail( email, operadorData, token );
         if ( result.affectedRows === 0 ) {
             return res.status(404).json({ error: "Operador no encontrado" });
         }
@@ -97,7 +105,8 @@ export const updateOperadorByEmail = async ( req, res ) => {
 export const deleteOperadorById = async ( req, res ) => {
     try {
         const { id } = req.params;
-        const result = await modelo.deleteOperadorById( id );
+        const token = req.headers.authorization;
+        const result = await modelo.deleteOperadorById( id, token );
         if ( result.affectedRows === 0 ) {
             return res.status(404).json({ error: "Operador no encontrado" });
         }
@@ -115,7 +124,8 @@ export const updateOperadorById = async ( req, res ) => {
     try {
         const { id } = req.params;
         const operadorData = req.body;
-        const result = await modelo.updateOperadorById( id, operadorData );
+        const token = req.headers.authorization;
+        const result = await modelo.updateOperadorById( id, operadorData, token );
         if ( result.affectedRows === 0 ) {
             return res.status(404).json({ error: "Operador no encontrado" });
         }
@@ -131,7 +141,8 @@ export const updateOperadorById = async ( req, res ) => {
 export const resetIntentosByID = async ( req, res ) => {
     try {
         const { id } = req.params;
-        const result = await modelo.resetIntentos( id );
+        const token = req.headers.authorization;
+        const result = await modelo.resetIntentosByID( id, token );
         if ( result.affectedRows === 0 ) {
             return res.status(404).json({ error: "Operador no encontrado" });
         }

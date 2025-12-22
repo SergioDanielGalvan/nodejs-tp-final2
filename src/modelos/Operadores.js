@@ -1,6 +1,6 @@
 import { db } from "./firebase.js";
 import { collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc } from "firebase/firestore";
-  
+
 const operadoresCollection = collection(db, "operadores");
 const LIMITE_INTENTOS_FALLIDOS = 5;
 
@@ -78,8 +78,16 @@ export const getOperadorByEmail = async ( email ) => {
     }   
 };
 
-export const createOperador = async ( operadorData ) => {
+export const createOperador = async ( operadorData, token ) => {
     try {
+        // Validaciones previas
+        const jsonOperador = await getTipoOperador( token );
+        if ( jsonOperador.error ) {
+            throw new Error( jsonOperador.error );
+        }
+        if ( jsonOperador.tipoOperador !== 1 {
+            throw new Error("No autorizado. Sólo Admin puede crear operadores.");
+        }
         const nuevoOperador = {
             email: operadorData.email, 
             password: hashString( operadorData.password ),
@@ -98,8 +106,16 @@ export const createOperador = async ( operadorData ) => {
     }
 };
 
-export const deleteOperadorByEmail = async ( email ) => {
+export const deleteOperadorByEmail = async ( email, token ) => {
     try {
+        // Validaciones previas
+        const jsonOperador = await getTipoOperador( token );
+        if ( jsonOperador.error ) {
+            throw new Error( jsonOperador.error );
+        }
+        if ( jsonOperador.tipoOperador !== 1 {
+            throw new Error("No autorizado. Sólo Admin puede eliminar operadores.");
+        }
         const coleccion = await getDocs(operadoresCollection);
         const operador = coleccion.docs 
             .map(doc => ({ id: doc.id, ...doc.data() }))
@@ -123,8 +139,16 @@ export const deleteOperadorByEmail = async ( email ) => {
     }   
 };
 
-export const deleteOperadorById = async ( id ) => {
+export const deleteOperadorById = async ( id, token ) => {
     try {
+        // Validaciones previas
+        const jsonOperador = await getTipoOperador( token );
+        if ( jsonOperador.error ) {
+            throw new Error( jsonOperador.error );
+        }
+        if ( jsonOperador.tipoOperador !== 1 {
+            throw new Error("No autorizado. Sólo Admin puede eliminar operadores.");
+        }
         const operadorRef = doc(operadoresCollection, id);
         const snapshot = await getDoc(operadorRef);
         if ( !snapshot.exists() ) {
@@ -141,9 +165,16 @@ export const deleteOperadorById = async ( id ) => {
     }
 };
 
-export const updateOperadorByEmail = async ( email, operadorData ) => {
+export const updateOperadorByEmail = async ( email, operadorData, token ) => {
     try {
         // Validaciones previas
+        const jsonOperador = await getTipoOperador( token );
+        if ( jsonOperador.error ) {
+            throw new Error( jsonOperador.error );
+        }
+        if ( jsonOperador.tipoOperador !== 1 ) {
+            throw new Error("No autorizado. Sólo Admin puede actualizar operadores.");
+        }
         if ( !email || typeof email !== 'string' || email.trim() === '' ) {
             throw new Error("email de operador inválido");
         }
@@ -174,10 +205,17 @@ export const updateOperadorByEmail = async ( email, operadorData ) => {
 export const updateOperadorById = async ( id, operadorData ) => {
     try {
         // Validaciones previas
+        const jsonOperador = await getTipoOperador( token );
+        if ( jsonOperador.error ) {
+            throw new Error( jsonOperador.error );
+        }
+        if ( jsonOperador.tipoOperador !== 1 ) {
+            throw new Error("No autorizado. Sólo Admin puede actualizar operadores.");
+        }
         if (!id || typeof id !== 'string') {
         throw new Error("ID de producto inválido");
         }
-        const operadorRef = doc(operadoresCollection, id);  
+        const operadorRef = doc(operadoresCollection, id);
         const snapshot = await getDoc(operadorRef);
         if ( !snapshot.exists() ) {
             throw new Error(`Operador con ID ${id} no encontrado`);
@@ -196,8 +234,16 @@ export const updateOperadorById = async ( id, operadorData ) => {
     }   
 };
 
-export const resetIntentosByID = async ( id ) => {
+export const resetIntentosByID = async ( id, token ) => {
     try {
+        // Validaciones previas
+        const jsonOperador = await getTipoOperador( token );
+        if ( jsonOperador.error ) {
+            throw new Error( jsonOperador.error );
+        }
+        if ( jsonOperador.tipoOperador !== 1 ) {
+            throw new Error("No autorizado. Sólo Admin puede resetear intentos.");
+        }
         const operadorRef = doc(operadoresCollection, id);
         const snapshot = await getDoc(operadorRef);
         if ( !snapshot.exists() ) {
@@ -215,3 +261,46 @@ export const resetIntentosByID = async ( id ) => {
     finally {
     }
 };
+
+export const getTipoOperador = async ( token ) => {
+    // Decodificar el token JWT para obtener la información del operador
+    try {
+        // Verifico el Token
+        if ( !token || token.trim() === '' ) {  
+            return { "error": "Token JWT inválido"};
+        }
+        const verify = jwt.verify( token, secretKey );
+        if ( token.startsWith("Bearer") ) {
+            token = token.slice(7, token.length).trim();
+        }
+        const decoded = jwt.decode( token, { complete: true } );
+        return decoded.payload; 
+        const email = decoded.email;
+        const id = decoded.id;
+        const snapshot = await getDocs(operadoresCollection);
+        const operador = snapshot.docs
+            .map(doc => ({ id: doc.id, ...doc.data() }))
+            .filter(producto => producto.email === email );
+        if ( !operador ) {
+            return { "error": "Operador no encontrado"};
+        }
+        // check y recupero de tipoOperador
+        if ( !operador.tipoOperador ) {
+            return { "error": "tipoOperador no definido para el operador"};
+        }
+        else {
+            if ( operador.id === id ) {
+                return { "tipoOperador": operador.tipoOperador };
+            }
+            return { "error": "No coinciden datos"};
+
+        }
+        //   return operador;
+    }
+    catch ( error ) {
+        console.error('Error al decodificar token JWT:', error);
+        throw error;
+    }   
+    finally {
+    }
+}
