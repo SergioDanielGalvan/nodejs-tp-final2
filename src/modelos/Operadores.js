@@ -262,7 +262,7 @@ export const resetIntentosByID = async ( id, token ) => {
     }
 };
 
-export const getTipoOperador = async ( token ) => {
+const getTipoOperador = async ( token ) => {
     // Decodificar el token JWT para obtener la información del operador
     try {
         // Verifico el Token
